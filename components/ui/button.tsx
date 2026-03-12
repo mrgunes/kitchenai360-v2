@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils/cn"
 import { ButtonHTMLAttributes, forwardRef } from "react"
 
-export type ButtonVariant = "primary" | "secondary" | "ghost"
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "inverted"
 export type ButtonSize = "sm" | "md" | "lg"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -16,6 +16,9 @@ const variantClasses: Record<ButtonVariant, string> = {
     "border border-slate-200 text-navy-900 bg-transparent hover:bg-navy-50 focus-visible:ring-navy-900",
   ghost:
     "text-navy-700 bg-transparent hover:bg-navy-50 hover:text-navy-900 focus-visible:ring-navy-700",
+  /** Use on navy/dark backgrounds in place of secondary. */
+  inverted:
+    "border border-white/30 text-white bg-transparent hover:border-white/50 hover:bg-white/10 focus-visible:ring-white",
 }
 
 const sizeClasses: Record<ButtonSize, string> = {

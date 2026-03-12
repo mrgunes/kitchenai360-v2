@@ -2,7 +2,6 @@ import Link from "next/link"
 import { Section } from "@/components/layout/section"
 import { Container } from "@/components/layout/container"
 import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils/cn"
 
 export function CtaBanner() {
   return (
@@ -27,10 +26,7 @@ export function CtaBanner() {
             </Link>
             <Link
               href="/waitlist"
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "lg" }),
-                "border-white/30 text-white hover:border-white/50 hover:bg-white/10",
-              )}
+              className={buttonVariants({ variant: "inverted", size: "lg" })}
             >
               Join the Waitlist
             </Link>

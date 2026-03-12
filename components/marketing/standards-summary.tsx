@@ -39,7 +39,7 @@ export function StandardsSummary() {
             </h2>
 
             <p className="mt-4 leading-relaxed text-slate-600">
-              KitchenAI360's specification guidance is grounded in publicly
+              KitchenAI360&#39;s specification guidance is grounded in publicly
               documented industry standards — not internal rules. We are
               transparent about what we reference and what falls outside our
               scope.
