@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum LeadRole {
+  homeowner
+  designer
+  contractor
+  dealer
+  manufacturer
+  investor
+  other
+}
+
+enum LeadType {
+  waitlist
+  demo
+}
+
+model Lead {
+  id                     String    @id @default(cuid())
+  type                   LeadType
+  firstName              String?
+  lastName               String?
+  fullName               String?
+  email                  String
+  company                String?
+  phone                  String?
+  state                  String?
+  role                   LeadRole  @default(other)
+  primaryUseCase         String?
+  problemDescription     String?
+  currentWorkflow        String?
+  teamSize               String?
+  preferredContactMethod String?
+  consent                Boolean   @default(false)
+  sourcePage             String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  @@index([email])
+  @@index([type])
+  @@index([role])
+  @@index([createdAt])
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  eventName String
+  sessionId String?
+  page      String?
+  payload   Json?
+  createdAt DateTime @default(now())
+
+  @@index([eventName])
+  @@index([createdAt])
+}
