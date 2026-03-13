@@ -24,6 +24,19 @@ export const metadata: Metadata = {
   description:
     "KitchenAI360 is an early-stage platform helping designers, contractors, and homeowners plan kitchens with AI-assisted specification and layout tools.",
   metadataBase: new URL("https://kitchenai360.com"),
+  openGraph: {
+    siteName: "KitchenAI360",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@kitchenai360",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({

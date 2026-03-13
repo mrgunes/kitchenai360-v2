@@ -1,4 +1,7 @@
+"use client"
+
 import { CheckSquare, Layers, Search, FileText } from "lucide-react"
+import { motion } from "framer-motion"
 import { Section } from "@/components/layout/section"
 import { Container } from "@/components/layout/container"
 import { FeatureCard } from "@/components/marketing/feature-card"
@@ -35,6 +38,9 @@ export function FeatureGrid() {
     <Section background="surface">
       <Container>
         <div className="mb-12 text-center">
+          <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-accent-500">
+            Platform capabilities
+          </span>
           <h2 className="text-3xl font-bold tracking-tight text-navy-900">
             What KitchenAI360 is designed to do
           </h2>
@@ -45,11 +51,25 @@ export function FeatureGrid() {
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{ show: { transition: { staggerChildren: 0.1 } } }}
+        >
           {features.map((feature) => (
-            <FeatureCard key={feature.title} {...feature} />
+            <motion.div
+              key={feature.title}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+              }}
+            >
+              <FeatureCard {...feature} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </Container>
     </Section>
   )

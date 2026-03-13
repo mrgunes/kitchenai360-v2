@@ -1,14 +1,28 @@
 import Link from "next/link"
+import { ArrowRight, Mail } from "lucide-react"
 import { Section } from "@/components/layout/section"
 import { Container } from "@/components/layout/container"
 import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils/cn"
 
 export function CtaBanner() {
   return (
-    <Section background="navy">
+    <Section background="navy" className="relative overflow-hidden">
+      {/* Subtle dot-grid background */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.055]"
+        aria-hidden
+        style={{
+          backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+      />
+
       <Container narrow>
-        <div className="text-center">
+        <div className="relative text-center">
+          <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-widest text-navy-100/60">
+            Early access
+          </span>
+
           <h2 className="text-3xl font-bold tracking-tight text-white">
             Get early access to KitchenAI360
           </h2>
@@ -24,14 +38,13 @@ export function CtaBanner() {
               className={buttonVariants({ variant: "primary", size: "lg" })}
             >
               Request a Demo
+              <ArrowRight size={16} aria-hidden />
             </Link>
             <Link
               href="/waitlist"
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "lg" }),
-                "border-white/30 text-white hover:border-white/50 hover:bg-white/10",
-              )}
+              className={buttonVariants({ variant: "inverted", size: "lg" })}
             >
+              <Mail size={16} aria-hidden />
               Join the Waitlist
             </Link>
           </div>
