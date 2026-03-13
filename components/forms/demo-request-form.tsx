@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Select } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import { trackEvent } from "@/lib/analytics/events"
 import {
   demoSchema,
   type DemoFormValues,
@@ -24,6 +25,7 @@ type Status = "idle" | "submitting" | "success" | "error"
 export function DemoRequestForm() {
   const [status, setStatus] = useState<Status>("idle")
   const [serverError, setServerError] = useState<string | null>(null)
+  const [honeypot, setHoneypot] = useState("")
 
   const {
     register,
@@ -61,10 +63,15 @@ export function DemoRequestForm() {
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ leadType: "demo", ...parsed.data }),
+        body: JSON.stringify({
+          leadType: "demo",
+          _honeypot: honeypot,
+          ...parsed.data,
+        }),
       })
 
       if (res.ok) {
+        trackEvent("demo_requested", { role: parsed.data.role })
         setStatus("success")
       } else {
         const json = await res.json().catch(() => ({}))
@@ -95,6 +102,18 @@ export function DemoRequestForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
+      {/* Honeypot — hidden from real users, traps bots that auto-fill all fields */}
+      <input
+        type="text"
+        name="_honeypot"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        tabIndex={-1}
+        aria-hidden="true"
+        autoComplete="off"
+        style={{ position: "absolute", left: "-9999px", opacity: 0, pointerEvents: "none" }}
+      />
+
       <div className="grid gap-4 sm:grid-cols-2">
 
         {/* Name */}

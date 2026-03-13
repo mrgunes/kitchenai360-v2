@@ -8,6 +8,7 @@ import { FormField } from "@/components/forms/form-field"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import { trackEvent } from "@/lib/analytics/events"
 import {
   contactSchema,
   type ContactFormValues,
@@ -18,6 +19,7 @@ type Status = "idle" | "submitting" | "success" | "error"
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle")
   const [serverError, setServerError] = useState<string | null>(null)
+  const [honeypot, setHoneypot] = useState("")
 
   const {
     register,
@@ -51,10 +53,15 @@ export function ContactForm() {
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ leadType: "contact", ...parsed.data }),
+        body: JSON.stringify({
+          leadType: "contact",
+          _honeypot: honeypot,
+          ...parsed.data,
+        }),
       })
 
       if (res.ok) {
+        trackEvent("contact_submitted")
         setStatus("success")
       } else {
         const json = await res.json().catch(() => ({}))
@@ -85,6 +92,18 @@ export function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
+      {/* Honeypot — hidden from real users, traps bots that auto-fill all fields */}
+      <input
+        type="text"
+        name="_honeypot"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        tabIndex={-1}
+        aria-hidden="true"
+        autoComplete="off"
+        style={{ position: "absolute", left: "-9999px", opacity: 0, pointerEvents: "none" }}
+      />
+
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField label="First name" htmlFor="ct-firstName" required error={errors.firstName?.message}>
           <Input

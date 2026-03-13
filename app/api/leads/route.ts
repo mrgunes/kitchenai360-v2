@@ -9,9 +9,44 @@ import {
 import { sendLeadNotification } from "@/lib/email"
 import { z } from "zod"
 
+// ── Rate limiting ─────────────────────────────────────────────────────────────
+// In-memory sliding window. Works within a single function instance only.
+// For global rate limiting across Vercel serverless instances, use Vercel KV.
+const ipRequests = new Map<string, { count: number; resetAt: number }>()
+const RATE_LIMIT_MAX = 5
+const RATE_LIMIT_WINDOW_MS = 60_000 // 1 minute
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const entry = ipRequests.get(ip)
+  if (!entry || now > entry.resetAt) {
+    ipRequests.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
+    return false
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return true
+  entry.count++
+  return false
+}
+
+// ── Schema ────────────────────────────────────────────────────────────────────
 const leadTypeSchema = z.enum(["waitlist", "demo", "contact"])
 
+// ── Handler ───────────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
+  // Rate limit by IP
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    req.headers.get("x-real-ip") ??
+    "unknown"
+
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { success: false, code: "rate_limited", message: "Too many requests. Please try again later." },
+      { status: 429 },
+    )
+  }
+
+  // Parse body
   let body: unknown
   try {
     body = await req.json()
@@ -29,8 +64,18 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const { leadType, ...formData } = body as Record<string, unknown>
+  const rawBody = body as Record<string, unknown>
 
+  // Honeypot check — bots that fill the hidden field get a fake success response
+  if (typeof rawBody._honeypot === "string" && rawBody._honeypot.length > 0) {
+    return NextResponse.json({ success: true }, { status: 200 })
+  }
+
+  // Strip honeypot before schema validation so it doesn't cause validation errors
+  const { leadType, _honeypot: _consumed, ...formData } = rawBody
+  void _consumed
+
+  // Validate lead type
   const typeResult = leadTypeSchema.safeParse(leadType)
   if (!typeResult.success) {
     return NextResponse.json(
@@ -111,8 +156,8 @@ export async function POST(req: NextRequest) {
       data: { ...baseData, ...typeSpecificData },
     })
 
-    // Send notification email — failure does not fail the request
-    sendLeadNotification(lead).catch(err => {
+    // Send notification email — failure does NOT fail the request
+    sendLeadNotification(lead).catch((err) => {
       console.error("[email] notification failed:", err)
     })
 

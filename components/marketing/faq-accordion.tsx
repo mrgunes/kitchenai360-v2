@@ -1,4 +1,9 @@
+"use client"
+
+import { useState } from "react"
 import Link from "next/link"
+import { ChevronDown } from "lucide-react"
+import { AnimatePresence, motion } from "framer-motion"
 import { Section } from "@/components/layout/section"
 import { Container } from "@/components/layout/container"
 import { buttonVariants } from "@/components/ui/button"
@@ -38,10 +43,15 @@ const faqs = [
 ]
 
 export function FaqAccordion() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+
   return (
     <Section background="surface">
       <Container narrow>
         <div className="mb-10 text-center">
+          <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-accent-500">
+            FAQ
+          </span>
           <h2 className="text-3xl font-bold tracking-tight text-navy-900">
             Frequently asked questions
           </h2>
@@ -52,36 +62,55 @@ export function FaqAccordion() {
         </div>
 
         <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-          {faqs.map((faq, index) => (
-            <details
-              key={faq.question}
-              className={cn(
-                "group",
-                index < faqs.length - 1 && "border-b border-slate-200",
-              )}
-            >
-              <summary
-                className={cn(
-                  "flex cursor-pointer list-none items-center justify-between px-6 py-4",
-                  "text-sm font-medium text-navy-900 transition-colors duration-150 hover:bg-slate-50",
-                  "[&::-webkit-details-marker]:hidden",
-                )}
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex === index
+            return (
+              <div
+                key={faq.question}
+                className={cn(index < faqs.length - 1 && "border-b border-slate-200")}
               >
-                {faq.question}
-                <span
-                  className="ml-4 shrink-0 text-lg leading-none text-slate-400 transition-transform duration-200 group-open:rotate-45"
-                  aria-hidden
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
+                  id={`faq-question-${index}`}
+                  className="flex w-full cursor-pointer items-center justify-between px-6 py-4 text-left text-sm font-medium text-navy-900 transition-colors duration-150 hover:bg-slate-50"
                 >
-                  +
-                </span>
-              </summary>
-              <div className="px-6 pb-5 pt-1">
-                <p className="text-sm leading-relaxed text-slate-600">
-                  {faq.answer}
-                </p>
+                  {faq.question}
+                  <ChevronDown
+                    size={16}
+                    className={cn(
+                      "ml-4 shrink-0 text-slate-400 transition-transform duration-200",
+                      isOpen && "rotate-180",
+                    )}
+                    aria-hidden
+                  />
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      id={`faq-answer-${index}`}
+                      role="region"
+                      aria-labelledby={`faq-question-${index}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 pb-5 pt-1">
+                        <p className="text-sm leading-relaxed text-slate-600">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-            </details>
-          ))}
+            )
+          })}
         </div>
 
         <div className="mt-6 text-center">

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { getAllGuideSlugs, getGuide } from "@/lib/content/guides"
 import { MdxRenderer } from "@/components/content/mdx-renderer"
 import { JsonLd } from "@/components/content/json-ld"
+import { PageViewTracker } from "@/components/content/page-view-tracker"
 import { Section } from "@/components/layout/section"
 import { Container } from "@/components/layout/container"
 
@@ -87,6 +88,7 @@ export default async function GuidePostPage({ params }: PageProps) {
   return (
     <>
       <JsonLd data={jsonLd} />
+      <PageViewTracker event="guide_article_opened" properties={{ slug, title: frontmatter.title }} />
 
       <Section size="lg" background="white">
         <Container narrow>

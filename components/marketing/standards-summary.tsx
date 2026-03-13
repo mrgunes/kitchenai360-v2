@@ -1,21 +1,24 @@
 import Link from "next/link"
-import { ArrowRight, ShieldCheck } from "lucide-react"
+import { ArrowRight, ShieldCheck, BookOpen, Home, Accessibility } from "lucide-react"
 import { Section } from "@/components/layout/section"
 import { Container } from "@/components/layout/container"
 import { buttonVariants } from "@/components/ui/button"
 
 const referencedStandards = [
   {
+    icon: BookOpen,
     name: "NKBA Kitchen Planning Guidelines",
     description:
       "Workflow zone placement, clearance minimums, and appliance spacing recommendations from the National Kitchen & Bath Association.",
   },
   {
+    icon: Home,
     name: "IRC Residential Clearances",
     description:
       "Minimum clearance requirements from the International Residential Code applicable to residential kitchen layouts.",
   },
   {
+    icon: Accessibility,
     name: "ADA Guidelines (where applicable)",
     description:
       "Accessibility clearance requirements for universal design and accessible kitchen planning considerations.",
@@ -63,16 +66,21 @@ export function StandardsSummary() {
           </div>
 
           {/* Right: standards list */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3">
             {referencedStandards.map((s) => (
               <div
                 key={s.name}
-                className="rounded-lg border border-slate-200 bg-slate-50 p-4"
+                className="flex gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4"
               >
-                <p className="text-sm font-semibold text-navy-900">{s.name}</p>
-                <p className="mt-1 text-sm leading-relaxed text-slate-500">
-                  {s.description}
-                </p>
+                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-white">
+                  <s.icon size={15} className="text-navy-700" aria-hidden />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-navy-900">{s.name}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-500">
+                    {s.description}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
