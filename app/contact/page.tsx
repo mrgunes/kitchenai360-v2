@@ -7,7 +7,8 @@ import { ContactForm } from "@/components/forms/contact-form"
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with the KitchenAI360 team.",
+  description:
+    "Contact the KitchenAI360 team with questions about kitchen planning, standards verification, or early access to the platform.",
 }
 
 const otherOptions = [

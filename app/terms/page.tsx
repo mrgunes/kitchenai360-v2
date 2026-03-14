@@ -9,11 +9,7 @@ export const metadata: Metadata = {
   description: "Terms and conditions for using the KitchenAI360 website and platform.",
 }
 
-/**
- * TODO: Confirm this date with your legal reviewer before publishing.
- * Replace with the actual date the terms were reviewed and approved.
- */
-const EFFECTIVE_DATE = "TBD — confirm before publishing"
+const EFFECTIVE_DATE = "March 2026"
 
 export default function TermsPage() {
   return (

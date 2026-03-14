@@ -7,7 +7,7 @@ import { DemoRequestForm } from "@/components/forms/demo-request-form"
 export const metadata: Metadata = {
   title: "Request a Demo",
   description:
-    "Request a walkthrough of KitchenAI360 with our team. Tell us about your planning workflow and we will be in touch.",
+    "Tell us about your kitchen planning workflow and we'll schedule a KitchenAI360 walkthrough. Our team follows up within a few business days.",
 }
 
 export default function RequestDemoPage() {

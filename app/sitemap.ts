@@ -15,6 +15,7 @@ const staticRoutes: MetadataRoute.Sitemap = [
   { url: `${BASE_URL}/blog`,          priority: 0.8,  changeFrequency: "weekly"  },
   { url: `${BASE_URL}/guides`,        priority: 0.8,  changeFrequency: "weekly"  },
   { url: `${BASE_URL}/faq`,           priority: 0.6,  changeFrequency: "monthly" },
+  { url: `${BASE_URL}/about`,         priority: 0.5,  changeFrequency: "yearly"  },
   { url: `${BASE_URL}/contact`,       priority: 0.5,  changeFrequency: "yearly"  },
   { url: `${BASE_URL}/privacy`,       priority: 0.3,  changeFrequency: "yearly"  },
   { url: `${BASE_URL}/terms`,         priority: 0.3,  changeFrequency: "yearly"  },

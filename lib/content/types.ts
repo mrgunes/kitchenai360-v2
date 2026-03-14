@@ -9,6 +9,7 @@ export const blogFrontmatterSchema = z.object({
   updatedAt:   z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
   tags:        z.array(z.string()).default([]),
   readingTime: z.number().int().positive().optional(),
+  author:      z.string().optional(),
 })
 
 export type BlogFrontmatter = z.infer<typeof blogFrontmatterSchema>
@@ -22,6 +23,7 @@ export const guideFrontmatterSchema = z.object({
   difficulty:  z.enum(["beginner", "intermediate", "advanced"]),
   readingTime: z.number().int().positive().optional(),
   tags:        z.array(z.string()).default([]),
+  author:      z.string().optional(),
 })
 
 export type GuideFrontmatter = z.infer<typeof guideFrontmatterSchema>

@@ -70,11 +70,7 @@ export function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" as const }}
           >
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-500/25 bg-accent-50 px-3 py-1 text-xs font-medium text-accent-600">
-              Early access — currently in development
-            </span>
-
-            <h1 className="mt-4 text-4xl font-bold leading-[1.1] tracking-tight text-navy-900 sm:text-5xl lg:text-[3.25rem]">
+            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-navy-900 sm:text-5xl lg:text-[3.25rem]">
               Kitchen planning built around accuracy
             </h1>
 
@@ -101,7 +97,8 @@ export function Hero() {
             </div>
 
             <p className="mt-4 text-xs text-slate-400">
-              No commitment required. We will contact you when early access opens.
+              Currently in early development. No commitment required — we will
+              contact you when access opens.
             </p>
           </motion.div>
 

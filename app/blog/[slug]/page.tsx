@@ -110,6 +110,12 @@ export default async function BlogPostPage({ params }: PageProps) {
             </p>
 
             <div className="mt-5 flex items-center gap-3 text-sm text-slate-400">
+              {frontmatter.author && (
+                <>
+                  <span>By {frontmatter.author}</span>
+                  <span aria-hidden="true">·</span>
+                </>
+              )}
               <time dateTime={frontmatter.publishedAt}>{formattedDate}</time>
               {frontmatter.readingTime && (
                 <>

@@ -9,11 +9,7 @@ export const metadata: Metadata = {
   description: "How KitchenAI360 collects, uses, and protects your personal information.",
 }
 
-/**
- * TODO: Confirm this date with your legal reviewer before publishing.
- * Replace with the actual date the policy was reviewed and approved.
- */
-const EFFECTIVE_DATE = "TBD — confirm before publishing"
+const EFFECTIVE_DATE = "March 2026"
 
 export default function PrivacyPage() {
   return (
